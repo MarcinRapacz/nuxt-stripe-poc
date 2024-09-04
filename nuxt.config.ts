@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     STRIPE_SECRET: "",
     public: {
-      STRIPE_PUBLIC: "",
+      STRIPE: "",
     },
   },
 });

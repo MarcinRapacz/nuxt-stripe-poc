@@ -5,9 +5,7 @@ export default defineNuxtPlugin({
   parallel: true,
   async setup() {
     const config = useRuntimeConfig();
-
-    config.public.STRIPE_PUBLIC;
-    const stripePlugin = await loadStripe(config.public.STRIPE_PUBLIC);
+    const stripePlugin = await loadStripe(config.public.STRIPE);
 
     return {
       provide: {
