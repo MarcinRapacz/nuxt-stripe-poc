@@ -3,8 +3,8 @@ const { data } = await useFetch("/stripe", { method: "post" });
 
 const stripe = useNuxtApp().$stripe;
 
-if (!stripe || !data.value?.clientSecret) throw new Error();
-const elements = stripe.elements({
+// if (!stripe || !data.value?.clientSecret) throw new Error();
+const elements = stripe?.elements({
   appearance: { theme: "stripe" },
   clientSecret: data.value.clientSecret,
 });
