@@ -2,6 +2,11 @@ import Stripe from "stripe";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
+  const ip = getRequestHeader(event, "x-forwarded-for");
+  const userAgent = getRequestHeader(event, "user-agent");
+
+  console.log({ ip }, { userAgent });
+
   const runtimeConfig = useRuntimeConfig();
   const stripe = new Stripe(runtimeConfig.STRIPE_SECRET);
 
@@ -18,10 +23,10 @@ export default defineEventHandler(async (event) => {
       mandate_data: {
         customer_acceptance: {
           type: "online",
-          // online: {
-          //   ip_address: req.ip,
-          //   user_agent: req.get("user-agent"),
-          // },
+          online: {
+            ip_address: ip!,
+            user_agent: userAgent!,
+          },
         },
       },
     });
@@ -30,11 +35,15 @@ export default defineEventHandler(async (event) => {
       intent,
       client_secret: intent.client_secret,
       status: intent.status,
+      ip,
+      userAgent,
     };
   } catch (e) {
     return {
       success: false,
       message: JSON.stringify(e),
+      ip,
+      userAgent,
     };
   }
 });
