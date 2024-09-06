@@ -8,13 +8,13 @@ export default defineEventHandler(async (event) => {
   try {
     const intent = await stripe.paymentIntents.create({
       confirm: true,
-      amount: 1099,
-      currency: "usd",
+      amount: 555,
+      currency: "pln",
       // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
       automatic_payment_methods: { enabled: true },
       payment_method: body.paymentMethodId, // the PaymentMethod ID sent by your client
       use_stripe_sdk: true,
-      return_url: "https://example.com/order/123/complete",
+      return_url: "https://nuxt-stripe-poc.vercel.app//success",
       mandate_data: {
         customer_acceptance: {
           type: "online",
@@ -27,6 +27,7 @@ export default defineEventHandler(async (event) => {
     });
 
     return {
+      intent,
       client_secret: intent.client_secret,
       status: intent.status,
     };
